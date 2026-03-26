@@ -1,0 +1,112 @@
+smart-care-system/
+│
+├── backend/
+│   ├── main.py                
+│   ├── frame_engine.py         
+│   ├── config.py               
+│   ├── requirements.txt
+│   ├── .env
+│   │
+│   ├── database/               
+│   │   ├── db.py               
+│   │   └── models.py           
+│   │
+│   ├── auth/                   
+│   │   ├── auth_router.py      
+│   │   └── jwt_handler.py      
+│   │
+│   ├── patients/               
+│   │   └── patient_router.py   
+│   │
+│   ├── websocket/              
+│   │   └── ws_manager.py       
+│   │
+│   ├── notifications/          
+│   │   └── twilio_service.py   
+│   │
+│   ├── alerts/                 
+│   │   ├── alert_manager.py    
+│   │   └── alert_router.py     
+│   │
+│   ├── fall_detection/        
+│   │   ├── detector.py
+│   │   └── models/
+│   │       ├── yolo11n-pose.pt
+│   │       └── activity_lstm_4class.keras
+│   │
+│   ├── evm_module/             
+│   │   ├── evm_processor.py
+│   │   ├── evm_service.py
+│   │   └── diag_mediapipe.py
+│   │
+│   └── camera/                 
+│       └── camera_stream.py
+│
+└── frontend/                   
+    ├── package.json
+    ├── public/
+    │   └── alarm.mp3           
+    │
+    └── src/
+        ├── App.jsx             
+        ├── main.jsx
+        ├── index.css           
+        │
+        ├── lib/
+        │   └── auth-context.jsx 
+        │
+        ├── services/
+        │   ├── api.js           
+        │   └── websocket.js     
+        │
+        ├── pages/
+        │   ├── Login.jsx
+        │   ├── Register.jsx
+        │   ├── PatientSetup.jsx 
+        │   ├── Dashboard.jsx    
+        │   ├── AlertHistory.jsx
+        │   └── VideoPlayback.jsx
+        │
+        └── components/
+            ├── Sidebar.jsx
+            ├── ProtectedRoute.jsx   
+            ├── AlertPanel.jsx       
+            ├── EmergencyPopup.jsx   
+            └── AddCaregiverModal.jsx 
+
+
+ARCHITECHURE
+
+                CAMERA
+                   │
+                   ▼
+            Frame Engine
+                   │
+                   ▼
+         AI Modules (Backend)
+        ┌───────────────┐
+        │ Fall Detection │
+        │ Heart Rate     │
+        └───────────────┘
+                   │
+                   ▼
+             Alert Manager
+                   │
+         ┌─────────┴─────────┐
+         ▼                   ▼
+     Database           WebSocket
+      (alerts)            server
+         │                   │
+         ▼                   ▼
+       REST API        Real-time alerts
+             \            /
+              \          /
+               ▼        ▼
+            FRONTEND DASHBOARD
+                   │
+         ┌─────────┼─────────┐
+         ▼         ▼         ▼
+     Live Video   Alerts   Health Data
+                   │
+                   ▼
+              Emergency Call
